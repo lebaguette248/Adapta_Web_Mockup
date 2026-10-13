@@ -1,0 +1,101 @@
+---
+import { links } from "../config";
+import Icon from "./Icon.astro";
+
+// TODO: replace with the official App Store / Google Play badges once the app is listed.
+const stores = [
+  { name: "App Store", label: "Download on the", url: links.appStore },
+  { name: "Google Play", label: "Get it on", url: links.playStore },
+];
+---
+
+<section id="download" class="py-16 md:py-28">
+  <div class="container-page">
+    <div class="reveal relative overflow-hidden rounded-panel bg-ink px-6 py-14 text-center text-white sm:px-12 md:py-20">
+      <div class="absolute -top-32 left-1/2 -z-0 h-64 w-[40rem] -translate-x-1/2 rounded-full bg-brand opacity-30 blur-3xl" aria-hidden="true"></div>
+
+      <div class="relative">
+        <h2 class="mx-auto max-w-2xl text-3xl font-bold sm:text-5xl">Ready when your week is.</h2>
+        <p class="mx-auto mt-5 max-w-xl text-lg text-white/75">
+          We're starting with a pilot for working triathletes. Leave your email and we'll let you know
+          as soon as you can try Adapta.
+        </p>
+
+        <form
+          data-waitlist
+          action={links.waitlistAction || undefined}
+          method="post"
+          class="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row"
+        >
+          <label for="waitlist-email" class="sr-only">Email address</label>
+          <input
+            id="waitlist-email"
+            name="email"
+            type="email"
+            required
+            autocomplete="email"
+            placeholder="you@example.com"
+            class="min-w-0 flex-1 rounded-full bg-white/10 px-5 py-3.5 text-white placeholder:text-white/50 ring-1 ring-white/20 focus:outline-none focus:ring-2 focus:ring-lime"
+          />
+          <button
+            type="submit"
+            class="rounded-full bg-brand px-6 py-3.5 font-semibold text-ink transition hover:brightness-105"
+          >
+            Join the pilot
+          </button>
+        </form>
+        <p data-waitlist-status class="mt-3 min-h-5 text-sm text-white/70" role="status"></p>
+
+        <div class="mt-10 flex flex-wrap justify-center gap-3">
+          {stores.map((s) =>
+            s.url ? (
+              <a
+                href={s.url}
+                class="flex items-center gap-3 rounded-xl bg-white px-5 py-2.5 text-left text-ink transition hover:bg-white/90"
+              >
+                <Icon name="phone" class="size-6" />
+                <span>
+                  <span class="block text-[11px] leading-none">{s.label}</span>
+                  <span class="block font-semibold">{s.name}</span>
+                </span>
+              </a>
+            ) : (
+              <span class="flex items-center gap-3 rounded-xl px-5 py-2.5 text-left text-white/70 ring-1 ring-white/20">
+                <Icon name="phone" class="size-6" />
+                <span>
+                  <span class="block text-[11px] leading-none">Coming soon to</span>
+                  <span class="block font-semibold">{s.name}</span>
+                </span>
+              </span>
+            ),
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("[data-waitlist]");
+  const status = document.querySelector<HTMLElement>("[data-waitlist-status]");
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!status) return;
+
+    if (!form.getAttribute("action")) {
+      status.textContent = "The waitlist isn't connected yet.";
+      console.warn("Set links.waitlistAction in src/config.ts to connect the waitlist form.");
+      return;
+    }
+
+    try {
+      const res = await fetch(form.action, { method: "POST", body: new FormData(form) });
+      if (!res.ok) throw new Error(String(res.status));
+      form.reset();
+      status.textContent = "Thanks! We'll be in touch when the pilot opens.";
+    } catch {
+      status.textContent = "Something went wrong. Please try again.";
+    }
+  });
+</script>

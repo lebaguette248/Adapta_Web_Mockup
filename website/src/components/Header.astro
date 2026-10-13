@@ -1,0 +1,28 @@
+---
+import Logo from "./Logo.astro";
+
+const nav = [
+  { href: "/#how-it-works", label: "How it works" },
+  { href: "/#marcos-week", label: "See it in action" },
+  { href: "/#faq", label: "FAQ" },
+];
+---
+
+<header class="sticky top-0 z-50 border-b border-line/60 bg-bg/80 backdrop-blur-md">
+  <div class="container-page flex h-16 items-center justify-between gap-6">
+    <Logo />
+    <nav aria-label="Main" class="hidden md:block">
+      <ul class="flex items-center gap-8 text-sm font-medium text-muted">
+        {nav.map((item) => (
+          <li><a href={item.href} class="transition-colors hover:text-ink">{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <a
+      href="/#download"
+      class="rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ink/85"
+    >
+      Join the pilot
+    </a>
+  </div>
+</header>

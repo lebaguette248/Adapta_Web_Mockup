@@ -1,0 +1,37 @@
+---
+const facts = [
+  { value: "40+ h", label: "at work every week" },
+  { value: "1 race", label: "on the calendar" },
+  { value: "2 slots", label: "of real free time" },
+];
+---
+
+<section class="bg-white py-16 md:py-28">
+  <div class="container-page reveal grid gap-12 md:grid-cols-2 md:items-center">
+    <div>
+      <p class="eyebrow">The problem</p>
+      <h2 class="mt-4 text-3xl font-bold sm:text-4xl">Most training plans assume you have time.</h2>
+      <p class="mt-5 text-lg leading-relaxed text-muted">
+        A plan that says "Tuesday: 90 min bike" doesn't know about your Tuesday. You end up rearranging
+        your week around the plan, or skipping sessions and feeling behind. Adapta starts from your
+        calendar instead and builds the plan around it.
+      </p>
+    </div>
+    <dl class="grid gap-4 sm:grid-cols-3 md:grid-cols-1 lg:grid-cols-3">
+      {facts.map((f) => (
+        <div class="rounded-card bg-surface p-6">
+          <dt class="text-sm text-muted">{f.label}</dt>
+          <dd class="order-first font-heading text-3xl font-bold tabular-nums">{f.value}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+<style>
+  dl > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+</style>

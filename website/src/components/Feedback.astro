@@ -1,0 +1,60 @@
+---
+// UC-06: log a workout, rate effort and feeling, plan adjusts.
+import Icon from "./Icon.astro";
+
+const feelings = ["Fresh", "Normal", "Tired"];
+const selectedFeeling = "Tired";
+const effort = 7;
+---
+
+<section class="bg-white py-16 md:py-28">
+  <div class="container-page grid items-center gap-14 md:grid-cols-2">
+    <div class="reveal md:order-2">
+      <p class="eyebrow">Learns from you</p>
+      <h2 class="mt-4 text-3xl font-bold sm:text-4xl">Tired? Ahead? Your next week knows.</h2>
+      <p class="mt-5 text-lg leading-relaxed text-muted">
+        After each session, a ten-second check-in: done, how hard it felt and how you feel. Adapta uses
+        it to shape what comes next. Missed a workout? It won't stack the load onto the rest of your week.
+      </p>
+    </div>
+
+    <div class="reveal mx-auto w-full max-w-sm rounded-panel bg-bg p-6 shadow-soft md:order-1">
+      <p class="flex items-center gap-2 text-sm font-semibold">
+        <Icon name="bell" class="size-4 text-primary-ink" /> Did you do your Wednesday run?
+      </p>
+
+      <div class="mt-4 grid grid-cols-3 gap-2 text-sm font-medium">
+        <span class="rounded-full bg-ink py-2 text-center text-white">Done</span>
+        <span class="rounded-full bg-white py-2 text-center text-muted">Partly</span>
+        <span class="rounded-full bg-white py-2 text-center text-muted">Missed</span>
+      </div>
+
+      <p class="mt-6 text-xs font-semibold uppercase tracking-wider text-muted">Effort</p>
+      <div class="mt-2 flex gap-1" aria-label={`Effort ${effort} of 10`}>
+        {Array.from({ length: 10 }, (_, i) => (
+          <span class:list={["h-2 flex-1 rounded-full", i < effort ? "bg-primary" : "bg-line"]}></span>
+        ))}
+      </div>
+      <p class="mt-1 text-right text-xs tabular-nums text-muted">{effort} / 10</p>
+
+      <p class="mt-4 text-xs font-semibold uppercase tracking-wider text-muted">How do you feel?</p>
+      <div class="mt-2 grid grid-cols-3 gap-2 text-sm font-medium">
+        {feelings.map((f) => (
+          <span
+            class:list={[
+              "rounded-full py-2 text-center",
+              f === selectedFeeling ? "bg-surface text-primary-ink ring-2 ring-primary" : "bg-white text-muted",
+            ]}
+          >
+            {f}
+          </span>
+        ))}
+      </div>
+
+      <p class="mt-6 flex items-start gap-2 rounded-card bg-white p-3 text-sm">
+        <Icon name="smile" class="mt-0.5 size-4 shrink-0 text-primary-ink" />
+        Got it. Friday's brick is now at an easier intensity.
+      </p>
+    </div>
+  </div>
+</section>

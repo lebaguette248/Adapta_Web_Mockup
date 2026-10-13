@@ -1,0 +1,50 @@
+---
+import Icon from "./Icon.astro";
+
+const steps = [
+  {
+    icon: "user",
+    title: "Tell us your goal",
+    text: "Your race, its date, your level and what you like to train. No race yet? Pick a general goal.",
+  },
+  {
+    icon: "calendar",
+    title: "Share your week",
+    text: "Connect Google, Outlook or Apple Calendar, or mark your free slots by hand.",
+  },
+  {
+    icon: "grid",
+    title: "Get your split",
+    text: "Adapta recommends how to structure your week for the slots you have, and explains why.",
+  },
+  {
+    icon: "checks",
+    title: "Get your plan",
+    text: "A concrete session for every slot, matched to its length, and added to your calendar.",
+  },
+] as const;
+---
+
+<section id="how-it-works" class="py-16 md:py-28">
+  <div class="container-page">
+    <div class="reveal max-w-2xl">
+      <p class="eyebrow">How it works</p>
+      <h2 class="mt-4 text-3xl font-bold sm:text-4xl">From busy calendar to training plan in four steps.</h2>
+    </div>
+
+    <ol class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {steps.map((step, i) => (
+        <li class="reveal rounded-card bg-white p-6 shadow-soft">
+          <div class="flex items-center justify-between">
+            <span class="grid size-11 place-items-center rounded-xl bg-surface text-primary-ink">
+              <Icon name={step.icon} />
+            </span>
+            <span class="font-heading text-sm font-semibold tabular-nums text-muted">0{i + 1}</span>
+          </div>
+          <h3 class="mt-5 text-lg font-semibold">{step.title}</h3>
+          <p class="mt-2 leading-relaxed text-muted">{step.text}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

@@ -1,0 +1,33 @@
+---
+import Icon from "./Icon.astro";
+
+const sports = [
+  { icon: "waves", name: "Swim" },
+  { icon: "bike", name: "Bike" },
+  { icon: "run", name: "Run" },
+  { icon: "dumbbell", name: "Strength", note: "optional" },
+] as const;
+---
+
+<section class="py-16 md:py-28">
+  <div class="container-page reveal text-center">
+    <p class="eyebrow">Built for triathletes</p>
+    <h2 class="mx-auto mt-4 max-w-2xl text-3xl font-bold sm:text-4xl">Three sports, one busy week.</h2>
+    <p class="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-muted">
+      From your first sprint to an age-group Olympic distance, or no race at all if you just want to
+      build your base.
+    </p>
+
+    <ul class="mx-auto mt-12 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-4">
+      {sports.map((s) => (
+        <li class="rounded-card bg-white p-6 shadow-soft">
+          <span class="mx-auto grid size-12 place-items-center rounded-full bg-surface text-primary-ink">
+            <Icon name={s.icon} class="size-6" />
+          </span>
+          <p class="mt-3 font-semibold">{s.name}</p>
+          {s.note && <p class="text-xs text-muted">{s.note}</p>}
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

@@ -1,0 +1,36 @@
+---
+import Icon from "./Icon.astro";
+import PhoneMockup from "./PhoneMockup.astro";
+---
+
+<section class="container-page grid items-center gap-16 py-16 md:grid-cols-[1.1fr_1fr] md:py-24">
+  <div class="reveal">
+    <p class="eyebrow">For triathletes with a full-time job</p>
+    <h1 class="mt-4 text-4xl font-bold leading-[1.1] sm:text-5xl lg:text-6xl">
+      Training that fits your week, <span class="text-primary-ink">not the other way around.</span>
+    </h1>
+    <p class="mt-6 max-w-xl text-lg leading-relaxed text-muted">
+      Adapta reads your calendar, finds the time you really have and turns it into a training plan
+      for your race. When a meeting moves, your plan moves with it.
+    </p>
+    <div class="mt-8 flex flex-wrap items-center gap-3">
+      <a
+        href="#download"
+        class="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3.5 font-semibold text-ink shadow-soft transition hover:brightness-105"
+      >
+        Join the pilot <Icon name="arrow" class="size-4" />
+      </a>
+      <a
+        href="#how-it-works"
+        class="rounded-full px-6 py-3.5 font-semibold text-ink ring-1 ring-line transition hover:bg-white"
+      >
+        See how it works
+      </a>
+    </div>
+    <p class="mt-6 text-sm text-muted">Coming to iOS and Android.</p>
+  </div>
+
+  <div class="reveal">
+    <PhoneMockup />
+  </div>
+</section>

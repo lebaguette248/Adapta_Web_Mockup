@@ -1,0 +1,276 @@
+---
+// Reference example from "Adapta Usecases.md": Marco, bank salesman, two free slots this week.
+// The week animates in three steps: busy calendar -> free slots -> planned workouts.
+import Icon from "./Icon.astro";
+
+const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const START = 7;
+const END = 22;
+
+type Block = { day: number; from: number; to: number; label: string };
+
+const busy: Block[] = [
+  ...[0, 1, 2, 3, 4].map((day) => ({ day, from: 8, to: 17, label: "Work" })),
+  { day: 0, from: 18, to: 21, label: "Client dinner" },
+  { day: 1, from: 17.5, to: 21, label: "Kids' swim class" },
+  { day: 2, from: 17, to: 18.5, label: "Meetings" },
+  { day: 2, from: 19.5, to: 21.5, label: "Dinner with friends" },
+  { day: 3, from: 17, to: 21.5, label: "Team event" },
+  { day: 4, from: 19, to: 21.5, label: "Date night" },
+  { day: 5, from: 9, to: 13, label: "Family" },
+  { day: 5, from: 14, to: 21, label: "Wedding" },
+  { day: 6, from: 10, to: 19, label: "Family trip" },
+];
+
+const slots = [
+  {
+    day: 2,
+    from: 18.5,
+    to: 19.5,
+    size: "1 h",
+    title: "Easy run",
+    detail: "45′ + mobility",
+    icon: "run",
+  },
+  {
+    day: 4,
+    from: 17,
+    to: 19,
+    size: "2 h",
+    title: "Brick",
+    detail: "75′ bike + 20′ run",
+    icon: "bike",
+  },
+] as const;
+
+const steps = [
+  { title: "Reads your calendar", text: "Work, family, everything that's already fixed." },
+  { title: "Finds your real free time", text: "This week, Marco has Wednesday 1 h and Friday 2 h." },
+  { title: "Fills each slot with the right session", text: "Light and fast mid-week, the key session on Friday." },
+];
+
+const span = END - START;
+const position = (b: { from: number; to: number }) =>
+  `top:${((b.from - START) / span) * 100}%;height:${((b.to - b.from) / span) * 100}%`;
+const hours = Array.from({ length: span / 2 + 1 }, (_, i) => START + i * 2);
+---
+
+<section id="marcos-week" class="bg-white py-16 md:py-28">
+  <div class="container-page" data-week data-step="0">
+    <div class="reveal grid gap-10 lg:grid-cols-[20rem_1fr] lg:gap-14">
+      <div>
+        <p class="eyebrow">See it in action</p>
+        <h2 class="mt-4 text-3xl font-bold sm:text-4xl">Meet Marco.</h2>
+        <p class="mt-4 leading-relaxed text-muted">
+          Bank salesman, full days Monday to Friday, training for an Olympic-distance triathlon. Here's
+          what Adapta does with his week.
+        </p>
+
+        <ol class="mt-8 space-y-5">
+          {steps.map((s, i) => (
+            <li class="step flex gap-4" data-caption={i + 1}>
+              <span class="step-dot mt-0.5 grid size-7 shrink-0 place-items-center rounded-full text-xs font-semibold tabular-nums">
+                {i + 1}
+              </span>
+              <div>
+                <p class="font-semibold">{s.title}</p>
+                <p class="text-sm text-muted">{s.text}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <button
+          type="button"
+          data-replay
+          class="mt-8 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-primary-ink ring-1 ring-line transition hover:bg-surface"
+        >
+          <Icon name="refresh" class="size-4" /> Replay
+        </button>
+      </div>
+
+      <div class="min-w-0">
+        <div class="overflow-x-auto rounded-panel bg-bg p-4 sm:p-6">
+          <div class="grid min-w-[44rem] grid-cols-[2.5rem_repeat(7,1fr)] gap-x-1.5">
+            <div></div>
+            {days.map((d) => (
+              <div class="pb-3 text-center text-xs font-semibold text-muted">{d}</div>
+            ))}
+
+            <div class="relative h-[38rem]" aria-hidden="true">
+              {hours.map((h) => (
+                <span
+                  class="absolute right-2 -translate-y-1/2 text-[10px] tabular-nums text-muted"
+                  style={`top:${((h - START) / span) * 100}%`}
+                >
+                  {h}:00
+                </span>
+              ))}
+            </div>
+
+            {days.map((day, d) => (
+              <div class="relative h-[38rem] rounded-lg bg-white" role="list" aria-label={day}>
+                {busy
+                  .filter((b) => b.day === d)
+                  .map((b, i) => (
+                    <div
+                      role="listitem"
+                      class="wk-busy absolute inset-x-0.5 overflow-hidden rounded-md bg-ink/[0.08] px-1.5 py-1 text-[10px] leading-tight text-ink/70"
+                      style={`${position(b)};--i:${d * 2 + i}`}
+                    >
+                      {b.label}
+                    </div>
+                  ))}
+                {slots
+                  .filter((s) => s.day === d)
+                  .map((s) => (
+                    <div role="listitem" class="absolute inset-x-0.5" style={position(s)}>
+                      <div class="wk-slot absolute inset-0 rounded-md border-2 border-dashed border-primary bg-surface px-1.5 py-1 text-[10px] font-semibold text-primary-ink">
+                        Free · {s.size}
+                      </div>
+                      <div class="wk-workout absolute inset-0 overflow-hidden rounded-md bg-brand px-1.5 py-1 text-ink shadow-soft">
+                        <p class="flex items-center gap-1 text-[11px] font-bold">
+                          <Icon name={s.icon} class="size-3 shrink-0" />
+                          {s.title}
+                        </p>
+                        <p class:list={["text-[10px] leading-tight", s.to - s.from < 1.5 && "truncate"]}>{s.detail}</p>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <p class="wk-note mt-4 flex items-start gap-3 rounded-card border border-dashed border-line bg-white p-4 text-sm text-muted">
+          <Icon name="waves" class="mt-0.5 size-5 shrink-0 text-primary-ink" />
+          <span>
+            <span class="font-semibold text-ink">Swimming isn't covered this week.</span> Adapta tells
+            Marco and suggests where one more slot, like a lunch break, would fit a swim.
+          </span>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .wk-busy,
+  .wk-slot,
+  .wk-workout,
+  .wk-note {
+    opacity: 0;
+    transition:
+      opacity 400ms ease-out,
+      transform 400ms ease-out;
+  }
+  .wk-busy {
+    transform: translateY(6px);
+    transition-delay: calc(var(--i) * 35ms);
+  }
+  .wk-slot {
+    transform: scale(0.96);
+  }
+  .wk-workout,
+  .wk-note {
+    transform: translateY(-10px);
+  }
+
+  [data-step="1"] .wk-busy,
+  [data-step="2"] .wk-busy,
+  [data-step="3"] .wk-busy {
+    opacity: 1;
+    transform: none;
+  }
+  [data-step="2"] .wk-slot,
+  [data-step="3"] .wk-slot {
+    opacity: 1;
+    transform: none;
+  }
+  [data-step="3"] .wk-busy {
+    opacity: 0.7;
+    transition-delay: 0ms;
+  }
+  [data-step="3"] .wk-workout,
+  [data-step="3"] .wk-note {
+    opacity: 1;
+    transform: none;
+  }
+
+  .step {
+    opacity: 0.45;
+    transition: opacity 300ms ease-out;
+  }
+  .step-dot {
+    background: var(--color-surface);
+    color: var(--color-primary-ink);
+  }
+  [data-step="1"] [data-caption="1"],
+  [data-step="2"] [data-caption="1"],
+  [data-step="2"] [data-caption="2"],
+  [data-step="3"] .step {
+    opacity: 1;
+  }
+  [data-step="1"] [data-caption="1"] .step-dot,
+  [data-step="2"] [data-caption="2"] .step-dot,
+  [data-step="3"] [data-caption="3"] .step-dot {
+    background: var(--color-ink);
+    color: white;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wk-busy,
+    .wk-slot,
+    .wk-workout,
+    .wk-note,
+    .step {
+      transition: none;
+    }
+  }
+</style>
+
+<noscript>
+  <style>
+    [data-week] .wk-busy,
+    [data-week] .wk-slot,
+    [data-week] .wk-workout,
+    [data-week] .wk-note,
+    [data-week] .step {
+      opacity: 1;
+      transform: none;
+    }
+  </style>
+</noscript>
+
+<script>
+  const STEP_DELAY = 1400;
+
+  for (const week of document.querySelectorAll<HTMLElement>("[data-week]")) {
+    let timers: number[] = [];
+
+    const play = () => {
+      timers.forEach(clearTimeout);
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        week.dataset.step = "3";
+        return;
+      }
+      week.dataset.step = "0";
+      timers = [1, 2, 3].map((step) =>
+        window.setTimeout(() => (week.dataset.step = String(step)), 150 + (step - 1) * STEP_DELAY),
+      );
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          play();
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.35 },
+    );
+    observer.observe(week);
+
+    week.querySelector("[data-replay]")?.addEventListener("click", play);
+  }
+</script>

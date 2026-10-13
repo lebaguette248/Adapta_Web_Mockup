@@ -1,0 +1,66 @@
+---
+// A CSS-only phone showing Marco's planned week. Swap for real screenshots once the app UI exists.
+import Icon from "./Icon.astro";
+---
+
+<div class="relative mx-auto w-[17rem] sm:w-72">
+  <div class="absolute -inset-10 -z-10 rounded-full bg-brand opacity-25 blur-3xl" aria-hidden="true"></div>
+
+  <div class="rounded-[2.75rem] bg-ink p-2.5 shadow-soft">
+    <div class="overflow-hidden rounded-[2.25rem] bg-bg">
+      <div class="flex items-center justify-between px-6 pt-4 text-[11px] font-semibold text-ink">
+        <span>9:41</span>
+        <span class="h-5 w-20 rounded-full bg-ink" aria-hidden="true"></span>
+        <span>100%</span>
+      </div>
+
+      <div class="space-y-3 px-4 pb-6 pt-5">
+        <div>
+          <p class="text-[11px] font-medium text-muted">Week 41 · Olympic distance</p>
+          <p class="font-heading text-xl font-bold">This week</p>
+        </div>
+
+        <div class="rounded-card bg-white p-3.5 shadow-soft">
+          <div class="flex items-center justify-between text-[11px] text-muted">
+            <span>Wed · 18:30–19:30</span><span>1 h slot</span>
+          </div>
+          <div class="mt-2 flex items-center gap-3">
+            <span class="grid size-9 place-items-center rounded-xl bg-surface text-primary-ink">
+              <Icon name="run" class="size-4.5" />
+            </span>
+            <div>
+              <p class="text-sm font-semibold">Easy run</p>
+              <p class="text-xs text-muted">45 min + 10 min mobility</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rounded-card bg-white p-3.5 shadow-soft ring-2 ring-primary/40">
+          <div class="flex items-center justify-between text-[11px] text-muted">
+            <span>Fri · 17:00–19:00</span><span class="font-semibold text-primary-ink">Key session</span>
+          </div>
+          <div class="mt-2 flex items-center gap-3">
+            <span class="grid size-9 place-items-center rounded-xl bg-brand text-white">
+              <Icon name="bike" class="size-4.5" />
+            </span>
+            <div>
+              <p class="text-sm font-semibold">Brick</p>
+              <p class="text-xs text-muted">75 min bike + 20 min run</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rounded-card border border-dashed border-line p-3 text-xs text-muted">
+          <span class="font-semibold text-ink">Swim not covered.</span> One more slot would fit it in.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="absolute -left-16 -top-5 hidden items-center gap-2 rounded-full bg-white py-2 pl-2 pr-4 text-xs font-medium shadow-soft sm:flex"
+  >
+    <span class="grid size-7 place-items-center rounded-full bg-surface text-primary-ink"><Icon name="calendar" class="size-4" /></span>
+    2 free slots found
+  </div>
+</div>

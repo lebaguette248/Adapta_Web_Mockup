@@ -1,0 +1,55 @@
+---
+import "@fontsource-variable/inter";
+import "@fontsource-variable/plus-jakarta-sans";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Adapta – Training that fits your week",
+  description = "Adapta reads your calendar, finds your real free time and turns it into a triathlon training plan that fits around your job.",
+} = Astro.props;
+
+const ogImage = new URL("/og-image.jpg", Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#f7faf8" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <noscript><style>.reveal { opacity: 1; transform: none; }</style></noscript>
+  </head>
+  <body class="bg-bg font-body text-ink antialiased">
+    <slot />
+
+    <script>
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          }
+        },
+        { threshold: 0.15 },
+      );
+      document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+    </script>
+  </body>
+</html>
